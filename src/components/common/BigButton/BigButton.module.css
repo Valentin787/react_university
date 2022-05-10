@@ -1,0 +1,27 @@
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  background-color: #ff6b0a;
+  border: none;
+
+  cursor: pointer;
+  transition: all 200ms;
+}
+.btn:hover {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+.disabled {
+  composes: btn;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.image {
+  margin-right: 10px;
+  border-radius: 20%;
+}
+.heading {
+  color: #fff;
+  line-height: 1.2;
+}

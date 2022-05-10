@@ -1,0 +1,12 @@
+.section {
+  margin-bottom: 32px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.img-wrapper {
+  margin-right: 8px;
+}
