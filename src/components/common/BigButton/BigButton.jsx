@@ -1,21 +1,20 @@
 import PropTypes from "prop-types";
 import s from "./BigButton.module.css";
 
-const BigButton = ({ text, icon }) => {
-  const isActive = true;
+const BigButton = ({ text, icon, onClickForm, value }) => {
+  const isActive = value;
+
   return (
-    <button className={isActive ? s.btn : s.disabled}>
-      {icon && (
-        <img className={s.image} width="20" height="20" src={icon} alt={text} />
-      )}
-      <span className={s.heading}> {text}</span>
+    <button onClick={onClickForm} className={isActive ? s.disabled : s.btn}>
+      <span className={s.icon}>{icon}</span>
+      <span className={s.heading}>{text}</span>
     </button>
   );
 };
 
 BigButton.propTypes = {
   text: PropTypes.string,
-  icon: PropTypes.string,
+  icon: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
 };
 
 export default BigButton;

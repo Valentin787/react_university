@@ -48,6 +48,14 @@ const Tutor = ({
   );
 };
 
-Tutor.propTypes = {};
+Tutor.propTypes = {
+  lastName: PropTypes.string,
+  firstName: PropTypes.string,
+  patronymic: PropTypes.string,
+  phone: PropTypes.string,
+  email: PropTypes.string,
+  city: PropTypes.string,
+  options: PropTypes.string,
+};
 
 export default Tutor;

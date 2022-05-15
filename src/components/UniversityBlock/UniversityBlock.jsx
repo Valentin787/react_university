@@ -5,7 +5,6 @@ import Card from "./Card/Card";
 
 import s from "../UniversityBlock/UniversityBlock.module.css";
 
-console.log(s);
 const UniversityBlock = ({ name, descr }) => {
   return (
     <section className={s.section}>

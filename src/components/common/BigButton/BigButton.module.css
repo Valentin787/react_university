@@ -17,9 +17,17 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
-.image {
+/* .image {
   margin-right: 10px;
   border-radius: 20%;
+} */
+.icon {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  color: white;
+
+  font-size: 20px;
 }
 .heading {
   color: #fff;

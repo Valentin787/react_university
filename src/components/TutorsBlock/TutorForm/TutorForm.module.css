@@ -1,0 +1,32 @@
+.wrap {
+  padding-left: 40px;
+  margin-bottom: 20px;
+}
+.form__wrap {
+}
+.header {
+  padding-left: 24px;
+  font-size: 20px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  align-items: baseline;
+  justify-content: space-around;
+  height: 450px;
+}
+input {
+  padding: 7px;
+  width: 50%;
+  border-radius: 10px;
+  border: 1px solid lightslategray;
+}
+input:hover {
+  border: 2px solid rgb(244, 121, 45);
+  box-shadow: 5px 7px 10px rgb(244, 121, 45);
+  transform: scale(1.1);
+  transition-duration: 300ms;
+  color: rgb(189, 107, 56);
+  text-shadow: 1px 1px 2px rgb(244, 121, 45);
+}

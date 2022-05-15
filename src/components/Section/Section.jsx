@@ -16,7 +16,6 @@ const sectionStyle = {
 };
 
 const Section = ({ icon, title, children }) => {
-  console.log(icon);
   return (
     <section css={sectionStyle}>
       <div className="header">
