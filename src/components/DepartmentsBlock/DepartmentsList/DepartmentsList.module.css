@@ -3,6 +3,7 @@
   flex-direction: column;
 }
 .item__list {
+  position: relative;
   margin-bottom: 24px;
   margin-right: 32px;
 }

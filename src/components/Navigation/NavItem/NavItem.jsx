@@ -1,18 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./NavItem.css";
+import s from "./NavItem.module.css";
 
-const NavItem = ({ name, icon }) => {
-  const isActive = false;
+const NavItem = ({ name, icon, isActive }) => {
   const navItemStyles = ["itemName"];
   isActive && navItemStyles.push("NavItemActive");
   return (
-    <div className="NavItem">
-      <span className="iconWrapper">
+    <div className={s.NavItem}>
+      <span className={s.iconWrapper}>
         {icon}
-        <a className={navItemStyles.join(" ")} href="/">
-          {name}
-        </a>
+        {isActive && (
+          <a className={s.itemName} href="/">
+            {name}
+          </a>
+        )}
       </span>
     </div>
   );
@@ -20,6 +21,7 @@ const NavItem = ({ name, icon }) => {
 NavItem.propTypes = {
   name: PropTypes.string.isRequired,
   icon: PropTypes.object.isRequired,
+  isActive: PropTypes.bool,
 };
 
 export default NavItem;

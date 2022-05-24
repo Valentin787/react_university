@@ -1,26 +1,44 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { Component } from "react";
 import Navigation from "../Navigation/Navigation";
-import "./Sidebar.css";
+import s from "./Sidebar.module.css";
+import { MdArrowForwardIos, MdArrowBackIosNew } from "react-icons/md";
 
-const defineStyles = (isOpen) => {
-  const finalStyles = ["Sidebar"];
-  if (!isOpen) {
-    finalStyles.push("Sidebar-closed");
+class Sidebar extends Component {
+  state = {
+    isOpen: false,
+  };
+
+  handlerOpenSidebar = () => {
+    this.setState((prevState) => ({
+      isOpen: !prevState.isOpen,
+    }));
+  };
+
+  render() {
+    const { isOpen } = this.state;
+    return (
+      <div className={isOpen ? s.Sidebar : s.SidebarClosed}>
+        <div className={s.SidebarDecor}></div>
+        <button
+          onClick={this.handlerOpenSidebar}
+          className={isOpen ? s.toggleBtnRight : s.toggleBtnRight}
+          aria-label="toggleSidebar"
+        >
+          {isOpen ? (
+            <span className={s.svgWrapLeft}>
+              <MdArrowBackIosNew />
+            </span>
+          ) : (
+            <span className={s.svgWrapRight}>
+              <MdArrowForwardIos />
+            </span>
+          )}
+        </button>
+        <Navigation isActive={isOpen} />
+      </div>
+    );
   }
-  return finalStyles.join(" ");
-};
-
-const Sidebar = () => {
-  const isOpen = true;
-  return (
-    <div className={defineStyles(isOpen)}>
-      <div className="Sidebar-decor"></div>
-      <button className="toggle-btn" aria-label="toggle-sidebar"></button>
-      <Navigation />
-    </div>
-  );
-};
+}
 
 Sidebar.propTypes = {};
 

@@ -1,21 +1,25 @@
 import PropTypes from "prop-types";
 import Paper from "../../common/Paper/Paper";
-
-import { HiOutlineMenu } from "react-icons/hi";
 import s from "./DepartmentsList.module.css";
+import CardWithMenu from "../../CardWithMenu/CardWithMenu";
 
-const DepartmentsList = ({ department }) => {
+const DepartmentsList = ({
+  department,
+  onDeleteDepartment,
+  isOpenModal,
+  onOpenEditDepartmentModal,
+}) => {
   return (
     <ul className={s.list}>
-      {department.map(({ name }, index) => (
+      {department.map((item, index) => (
         <li className={s.item__list} key={index + 1}>
           <Paper>
-            <div className={s.item}>
-              <p>{name}</p>
-              <button className={s.button}>
-                <HiOutlineMenu />
-              </button>
-            </div>
+            <CardWithMenu
+              text={item}
+              onDeleteDepartment={() => onDeleteDepartment(item)}
+              isOpenModal={isOpenModal}
+              onOpenEditDepartmentModal={() => onOpenEditDepartmentModal(item)}
+            />
           </Paper>
         </li>
       ))}
@@ -24,11 +28,10 @@ const DepartmentsList = ({ department }) => {
 };
 
 DepartmentsList.propTypes = {
-  department: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    })
-  ),
+  department: PropTypes.array.isRequired,
+  onDeleteDepartment: PropTypes.func,
+  isOpenModal: PropTypes.bool,
+  onOpenEditDepartmentModal: PropTypes.func,
 };
 
 export default DepartmentsList;

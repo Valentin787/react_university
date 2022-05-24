@@ -1,5 +1,4 @@
 import universityInfo from "../../data/universityInfo.json";
-import PropTypes from "prop-types";
 import Header from "../Header/Header";
 import UniversityBlock from "../UniversityBlock/UniversityBlock";
 import TutorsBlock from "../TutorsBlock/TutorsBlock";

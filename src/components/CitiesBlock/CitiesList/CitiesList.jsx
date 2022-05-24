@@ -1,32 +1,39 @@
 import PropTypes from "prop-types";
+import { Component } from "react";
 
-import { HiMenu } from "react-icons/hi";
-
+import CardWithMenu from "../../CardWithMenu/CardWithMenu";
 import Paper from "../../common/Paper/Paper";
-
 import s from "../CitiesBlock.module.css";
 
-const CitiesList = ({ cities }) => {
-  return (
-    <ul className={s.list}>
-      {cities.map((city, index) => (
-        <li className={s.item__list} key={index + 1}>
-          <Paper>
-            <div className={s.item}>
-              <p>{city}</p>
-              <button className={s.button}>
-                <HiMenu />
-              </button>
-            </div>
-          </Paper>
-        </li>
-      ))}
-    </ul>
-  );
-};
+class CitiesList extends Component {
+  render() {
+    const { cities, onDeleteCity, onModalCityOpen, onOpenEditCityModal } =
+      this.props;
+
+    return (
+      <ul className={s.list}>
+        {cities.map((city, index) => (
+          <li className={s.item__list} key={index + 1}>
+            <Paper>
+              <CardWithMenu
+                text={city}
+                onDeleteCity={() => onDeleteCity(city)}
+                onModalCityOpen={onModalCityOpen}
+                onOpenEditCityModal={() => onOpenEditCityModal(city)}
+              />
+            </Paper>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+}
 
 CitiesList.propTypes = {
   cities: PropTypes.array,
+  onDeleteCity: PropTypes.func,
+  onModalCityOpen: PropTypes.bool,
+  onOpenEditCityModal: PropTypes.func,
 };
 
 export default CitiesList;

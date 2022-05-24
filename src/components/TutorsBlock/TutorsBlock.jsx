@@ -3,7 +3,6 @@ import Tutor from "./Tutor/Tutor";
 import TutorForm from "./TutorForm/TutorForm";
 import Paper from "../common/Paper/Paper";
 import BigButton from "../common/BigButton/BigButton";
-import editIcon from "../../images/icon-add.png";
 import { HiPlusCircle } from "react-icons/hi";
 
 import s from "./TutorsBlock.module.css";
@@ -26,6 +25,7 @@ class TutorsBlock extends Component {
   addTutors = (newTutor) => {
     this.setState((prevState) => ({
       tutorsEL: [...prevState.tutorsEL, newTutor],
+      isOpenForm: false,
     }));
   };
 
@@ -43,7 +43,7 @@ class TutorsBlock extends Component {
             </li>
           ))}
         </ul>
-        {isOpenForm && <TutorForm onSubmit={this.addTutors} />}
+        {isOpenForm && <TutorForm onAddTutor={this.addTutors} />}
         <BigButton
           value={isOpenForm}
           onClickForm={this.handleToggleForm}
@@ -54,6 +54,20 @@ class TutorsBlock extends Component {
     );
   }
 }
+
+TutorsBlock.propTypes = {
+  tutors: PropTypes.arrayOf(
+    PropTypes.shape({
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+      patronymic: PropTypes.string,
+      phone: PropTypes.string,
+      email: PropTypes.string,
+      city: PropTypes.string,
+      options: PropTypes.string,
+    }).isRequired
+  ).isRequired,
+};
 
 // const TutorsBlock = ({ tutors }) => {
 //   return (

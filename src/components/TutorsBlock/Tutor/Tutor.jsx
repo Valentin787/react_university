@@ -49,13 +49,13 @@ const Tutor = ({
 };
 
 Tutor.propTypes = {
-  lastName: PropTypes.string,
-  firstName: PropTypes.string,
-  patronymic: PropTypes.string,
-  phone: PropTypes.string,
-  email: PropTypes.string,
-  city: PropTypes.string,
-  options: PropTypes.string,
+  lastName: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  firstName: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  patronymic: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  phone: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  email: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  city: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  options: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 };
 
 export default Tutor;
