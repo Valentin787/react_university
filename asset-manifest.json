@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/react_university/static/css/main.845a9854.css",
-    "main.js": "/react_university/static/js/main.c5a601bd.js",
+    "main.css": "/react_university/static/css/main.c364a1a0.css",
+    "main.js": "/react_university/static/js/main.a18c5db6.js",
     "static/media/iconfinder-499-student-education-graduate-learning-4212915_114945.svg": "/react_university/static/media/iconfinder-499-student-education-graduate-learning-4212915_114945.745009451be78fce6ca5b7b7058be4dd.svg",
     "static/media/building-education-school-school-icon_112987.svg": "/react_university/static/media/building-education-school-school-icon_112987.7de56cfbe6959215c47d5ca9b7c098e1.svg",
     "static/media/bag.svg": "/react_university/static/media/bag.05ead566bd6b423a2ef9efda082a812f.svg",
@@ -11,15 +11,12 @@
     "static/media/envelop.svg": "/react_university/static/media/envelop.b3821cdbbe07302c3661b4dd422c61e7.svg",
     "static/media/location.svg": "/react_university/static/media/location.fe968c697aaeb2c153ac27ec3f4096f9.svg",
     "static/media/mobile.svg": "/react_university/static/media/mobile.affde37f5636f3b377afb7af1a83a910.svg",
-    "static/media/menu_open.svg": "/react_university/static/media/menu_open.1c8801058d8b4c4c44a8d5d9eb60c35f.svg",
-    "static/media/arrow_forward_ios.svg": "/react_university/static/media/arrow_forward_ios.22a72c0da212a3a766f7.svg",
-    "static/media/arrow_left.svg": "/react_university/static/media/arrow_left.2d6a0e9b31a87b4da240.svg",
     "static/media/plus.svg": "/react_university/static/media/plus.2d876f4960b3e4e06a83b2f8533b9e0f.svg",
-    "main.845a9854.css.map": "/react_university/static/css/main.845a9854.css.map",
-    "main.c5a601bd.js.map": "/react_university/static/js/main.c5a601bd.js.map"
+    "main.c364a1a0.css.map": "/react_university/static/css/main.c364a1a0.css.map",
+    "main.a18c5db6.js.map": "/react_university/static/js/main.a18c5db6.js.map"
   },
   "entrypoints": [
-    "static/css/main.845a9854.css",
-    "static/js/main.c5a601bd.js"
+    "static/css/main.c364a1a0.css",
+    "static/js/main.a18c5db6.js"
   ]
 }
