@@ -6,8 +6,9 @@ import CardWithMenu from "../../CardWithMenu/CardWithMenu";
 const DepartmentsList = ({
   department,
   onDeleteDepartment,
-  isOpenModal,
+  onOpenModalDelete,
   onOpenEditDepartmentModal,
+  onEditModalOpen,
 }) => {
   return (
     <ul className={s.list}>
@@ -16,9 +17,10 @@ const DepartmentsList = ({
           <Paper>
             <CardWithMenu
               text={item}
-              onDeleteDepartment={() => onDeleteDepartment(item)}
-              isOpenModal={isOpenModal}
-              onOpenEditDepartmentModal={() => onOpenEditDepartmentModal(item)}
+              onDeleteModal={() => onDeleteDepartment(item)}
+              onOpenModalDelete={onOpenModalDelete}
+              onOpenEditModal={() => onOpenEditDepartmentModal(item)}
+              onEditModalOpen={onEditModalOpen}
             />
           </Paper>
         </li>
@@ -30,7 +32,7 @@ const DepartmentsList = ({
 DepartmentsList.propTypes = {
   department: PropTypes.array.isRequired,
   onDeleteDepartment: PropTypes.func,
-  isOpenModal: PropTypes.bool,
+  onOpenModalDelete: PropTypes.string,
   onOpenEditDepartmentModal: PropTypes.func,
 };
 

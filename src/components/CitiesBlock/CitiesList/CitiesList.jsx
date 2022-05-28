@@ -7,8 +7,13 @@ import s from "../CitiesBlock.module.css";
 
 class CitiesList extends Component {
   render() {
-    const { cities, onDeleteCity, onModalCityOpen, onOpenEditCityModal } =
-      this.props;
+    const {
+      cities,
+      onDeleteCity,
+      onModalCityOpen,
+      onOpenEditCityModal,
+      onEditModalOpen,
+    } = this.props;
 
     return (
       <ul className={s.list}>
@@ -17,9 +22,10 @@ class CitiesList extends Component {
             <Paper>
               <CardWithMenu
                 text={city}
-                onDeleteCity={() => onDeleteCity(city)}
+                onDeleteModal={() => onDeleteCity(city)}
                 onModalCityOpen={onModalCityOpen}
-                onOpenEditCityModal={() => onOpenEditCityModal(city)}
+                onOpenEditModal={() => onOpenEditCityModal(city)}
+                onEditModalOpen={onEditModalOpen}
               />
             </Paper>
           </li>
@@ -32,7 +38,7 @@ class CitiesList extends Component {
 CitiesList.propTypes = {
   cities: PropTypes.array,
   onDeleteCity: PropTypes.func,
-  onModalCityOpen: PropTypes.bool,
+  onModalCityOpen: PropTypes.string,
   onOpenEditCityModal: PropTypes.func,
 };
 

@@ -1,15 +1,23 @@
 import PropTypes from "prop-types";
-
-import DepartmentForm from "./DepartmentForm/DepartmentForm";
-import DepartmentsList from "./DepartmentsList/DepartmentsList";
-import BigButton from "../common/BigButton/BigButton";
-import { HiPlusCircle } from "react-icons/hi";
-import { FaEdit } from "react-icons/fa";
 import { Component } from "react";
+import EditCard from "../common/EditCard/EditCard";
+import BigButton from "../common/BigButton/BigButton";
 import Modal from "../common/Modal/Modal";
 import DeleteCard from "../common/DeleteCard/DeleteCard";
+import DepartmentForm from "./DepartmentForm/DepartmentForm";
+import DepartmentsList from "./DepartmentsList/DepartmentsList";
 import Filter from "../Filter/Filter";
-import EditCard from "../common/EditCard/EditCard";
+import * as storage from "../../services/localStorage";
+import { HiPlusCircle } from "react-icons/hi";
+import { FaEdit } from "react-icons/fa";
+
+const STORAGE_KEY = "departments";
+
+const MODAL = {
+  NONE: "none",
+  EDIT: "edit",
+  DELETE: "delete",
+};
 
 class DepartmentsBlock extends Component {
   static propTypes = {
@@ -20,10 +28,33 @@ class DepartmentsBlock extends Component {
     department: this.props.department,
     activeDepartment: "",
     filter: "",
-    isDeleteModalOpen: false,
     isAddFormOpen: false,
+    openModal: MODAL.NONE,
+    // isDeleteModalOpen: false,
     isEditModalOpen: false,
   };
+
+  // COMPONENTS METHODS
+
+  componentDidMount() {
+    // const citiesArr = localStorage.getItem("cities");
+    // const citiesArrParse = JSON.parse(citiesArr)
+    // if (citiesArrParse) {
+    //   this.setState({cities:citiesArrParse})
+    // }
+    const savedDepartments = storage.get(STORAGE_KEY);
+    if (savedDepartments) {
+      this.setState({ department: savedDepartments });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    const { department } = this.state;
+
+    if (prevState.department !== department) {
+      // return localStorage.setItem("cities", JSON.stringify(this.state.cities))
+      return storage.save(STORAGE_KEY, department);
+    }
+  }
 
   // OPEN \/ CLOSE FORM
 
@@ -32,7 +63,11 @@ class DepartmentsBlock extends Component {
       isAddFormOpen: !prevState.isAddFormOpen,
     }));
 
-  closeModal = () => this.setState({ isDeleteModalOpen: false });
+  closeModal = () =>
+    this.setState({
+      openModal: MODAL.NONE,
+      activeDepartment: "",
+    });
 
   // ADD DEPARTMENT
   addNewDepartment = (newDepartment) => {
@@ -44,6 +79,7 @@ class DepartmentsBlock extends Component {
       department: someDepartment
         ? prevState.department
         : [...prevState.department, newDepartment],
+      isAddFormOpen: false,
     }));
     // this.setState((prevState) => ({
     //   department:[...prevState.department,newDepartment]
@@ -53,7 +89,8 @@ class DepartmentsBlock extends Component {
   //EDIT DEPARTMENT
   handleStartEditting = (activeDepartment) => {
     this.setState({
-      isEditModalOpen: true,
+      openModal: MODAL.EDIT,
+      // isEditModalOpen: true,
       activeDepartment,
     });
   };
@@ -64,12 +101,12 @@ class DepartmentsBlock extends Component {
       department: prevState.department.map((item) =>
         activeDepartment === item ? editDepartment : item
       ),
-      activeCity: "",
+      activeDepartment: "",
     }));
 
-    this.closeEditModal();
+    this.closeModal();
   };
-  closeEditModal = () => this.setState({ isEditModalOpen: false });
+  // closeEditModal = () => this.setState({ isEditModalOpen: false });
 
   // FILTER CITY
   handlerFilterChangeInput = (e) => {
@@ -90,7 +127,8 @@ class DepartmentsBlock extends Component {
   handleStartDeleteDepartment = (activeDepartment) => {
     this.setState({
       activeDepartment,
-      isDeleteModalOpen: true,
+      openModal: MODAL.DELETE,
+      // isDeleteModalOpen: true,
     });
   };
 
@@ -103,6 +141,7 @@ class DepartmentsBlock extends Component {
       ),
       activeDepartment: "",
     }));
+    this.closeModal();
   };
 
   render() {
@@ -110,27 +149,34 @@ class DepartmentsBlock extends Component {
       department,
       filter,
       activeDepartment,
-      isDeleteModalOpen,
+      openModal,
       isAddFormOpen,
-      isEditModalOpen,
+      // isDeleteModalOpen,
+      // isEditModalOpen,
     } = this.state;
 
     const filterDepartment = this.getFilteredDepartment();
     return (
       <>
         <div>
-          <Filter
-            onFilter={this.handlerFilterChangeInput}
-            value={filter}
-            label="Поиск факультета:"
-            placeholder="Введите название факультета ..."
-          />
-          <DepartmentsList
-            department={filterDepartment}
-            onDeleteDepartment={this.handleStartDeleteDepartment}
-            isOpenModal={isDeleteModalOpen}
-            onOpenEditDepartmentModal={this.handleStartEditting}
-          />
+          {department.length > 1 && (
+            <Filter
+              onFilter={this.handlerFilterChangeInput}
+              value={filter}
+              label="Поиск факультета:"
+              placeholder="Введите название факультета ..."
+            />
+          )}
+          {!department.length && <strong>Еще не записаны факультеты...</strong>}
+          {filterDepartment.length > 0 && (
+            <DepartmentsList
+              department={filterDepartment}
+              onDeleteDepartment={this.handleStartDeleteDepartment}
+              onOpenModalDelete={openModal}
+              onOpenEditDepartmentModal={this.handleStartEditting}
+              onEditModalOpen={openModal}
+            />
+          )}
           {isAddFormOpen && (
             <DepartmentForm
               addNewDepartment={this.addNewDepartment}
@@ -146,11 +192,11 @@ class DepartmentsBlock extends Component {
             icon={!isAddFormOpen && <HiPlusCircle />}
           />
         </div>
-        {isEditModalOpen && (
+        {openModal === MODAL.EDIT && (
           <Modal
             icon={<FaEdit />}
             onClose={this.closeModal}
-            onCloseEditModal={this.closeEditModal}
+            // onCloseEditModal={this.closeModal}
             title="Редактировать информацию о факультетах"
           >
             <EditCard
@@ -160,9 +206,10 @@ class DepartmentsBlock extends Component {
           </Modal>
         )}
 
-        {isDeleteModalOpen && (
+        {openModal === MODAL.DELETE && (
           <Modal
             onClose={this.closeModal}
+            // onCloseEditModal={this.closeModal}
             onDeletePepartment={this.onDeleteDepartment}
             title="Удаление факультета"
           >
