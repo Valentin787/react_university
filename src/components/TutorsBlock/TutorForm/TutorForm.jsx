@@ -24,7 +24,7 @@ class TutorForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state);
+
     const { onAddTutor } = this.props;
     onAddTutor(this.state);
     this.resetForm();

@@ -12,11 +12,11 @@ const DepartmentsList = ({
 }) => {
   return (
     <ul className={s.list}>
-      {department.map((item, index) => (
-        <li className={s.item__list} key={index + 1}>
+      {department.map((item) => (
+        <li className={s.item__list} key={item.id}>
           <Paper>
             <CardWithMenu
-              text={item}
+              text={item.name}
               onDeleteModal={() => onDeleteDepartment(item)}
               onOpenModalDelete={onOpenModalDelete}
               onOpenEditModal={() => onOpenEditDepartmentModal(item)}

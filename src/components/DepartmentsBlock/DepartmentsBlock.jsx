@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import { Component } from "react";
+import Skeleton from "../common/Skeleton/Skeleton";
+import Loader from "../common/Loader/Loader";
 import EditCard from "../common/EditCard/EditCard";
 import BigButton from "../common/BigButton/BigButton";
 import Modal from "../common/Modal/Modal";
@@ -7,14 +9,18 @@ import DeleteCard from "../common/DeleteCard/DeleteCard";
 import DepartmentForm from "./DepartmentForm/DepartmentForm";
 import DepartmentsList from "./DepartmentsList/DepartmentsList";
 import Filter from "../Filter/Filter";
+import * as api from "../../services/api";
 import * as storage from "../../services/localStorage";
+import { toast } from "react-toastify";
 import { HiPlusCircle } from "react-icons/hi";
 import { FaEdit } from "react-icons/fa";
 
 const STORAGE_KEY = "departments";
+const API_ENDPOINT = "departments";
 
-const MODAL = {
+const ACTION = {
   NONE: "none",
+  ADD: "add",
   EDIT: "edit",
   DELETE: "delete",
 };
@@ -25,13 +31,19 @@ class DepartmentsBlock extends Component {
   };
 
   state = {
-    department: this.props.department,
-    activeDepartment: "",
+    department: [],
+    activeDepartment: null,
     filter: "",
+    newDepartment: null,
+
+    openModal: ACTION.NONE,
+    action: ACTION.NONE,
     isAddFormOpen: false,
-    openModal: MODAL.NONE,
     // isDeleteModalOpen: false,
-    isEditModalOpen: false,
+    // isEditModalOpen: false,
+    loading: false,
+    error: null,
+    firstLoading: false,
   };
 
   // COMPONENTS METHODS
@@ -42,19 +54,62 @@ class DepartmentsBlock extends Component {
     // if (citiesArrParse) {
     //   this.setState({cities:citiesArrParse})
     // }
-    const savedDepartments = storage.get(STORAGE_KEY);
-    if (savedDepartments) {
-      this.setState({ department: savedDepartments });
-    }
+    // LOCAL STORAGE
+    // const savedDepartments = storage.get(STORAGE_KEY);
+    // if (savedDepartments) {
+    //   this.setState({ department: savedDepartments });
+    // }
+    // FETCH API
+    this.setState({
+      firstLoading: true,
+    });
+    this.fetchDepartments().finally(() =>
+      this.setState({ firstLoading: false })
+    );
   }
   componentDidUpdate(prevProps, prevState) {
-    const { department } = this.state;
+    const { action } = this.state;
 
-    if (prevState.department !== department) {
-      // return localStorage.setItem("cities", JSON.stringify(this.state.cities))
-      return storage.save(STORAGE_KEY, department);
+    if (prevState.action !== action) {
+      if (action === ACTION.ADD) {
+        this.addNewDepartment();
+        return;
+      }
+      if (action === ACTION.EDIT) {
+        this.saveEditDepartment();
+        return;
+      }
+      if (action === ACTION.DELETE) {
+        this.onDeleteDepartment();
+        return;
+      }
     }
+
+    // if (newDepartment !== null && prevState.newDepartment !== newDepartment) {
+    //   this.addNewDepartment()
+
+    //   // LOCAL STORAGE
+    //   // return localStorage.setItem("cities", JSON.stringify(this.state.cities))
+    //   // return storage.save(STORAGE_KEY, department);
+    // }
   }
+
+  // GET DEPARTMENTS
+
+  fetchDepartments = async () => {
+    this.setState({
+      loading: true,
+      error: null,
+    });
+    try {
+      const department = await api.getData(API_ENDPOINT);
+      this.setState({ department });
+    } catch (error) {
+      this.setState({ error: error.message });
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
 
   // OPEN \/ CLOSE FORM
 
@@ -65,22 +120,71 @@ class DepartmentsBlock extends Component {
 
   closeModal = () =>
     this.setState({
-      openModal: MODAL.NONE,
+      openModal: ACTION.NONE,
       activeDepartment: "",
     });
 
   // ADD DEPARTMENT
-  addNewDepartment = (newDepartment) => {
+  confirmAdd = (newDepartment) => {
+    this.setState({
+      action: ACTION.ADD,
+      activeDepartment: {
+        name: newDepartment,
+      },
+    });
+  };
+  addNewDepartment = async () => {
+    this.setState({ loading: true });
+    const { activeDepartment } = this.state;
+
     const someDepartment = this.state.department.some(
-      (item) => item === newDepartment
+      (item) => item.name === activeDepartment.name
     );
 
-    this.setState((prevState) => ({
-      department: someDepartment
-        ? prevState.department
-        : [...prevState.department, newDepartment],
-      isAddFormOpen: false,
-    }));
+    try {
+      if (!someDepartment) {
+        const savedDepartment = await api.saveItem(
+          API_ENDPOINT,
+          activeDepartment
+        );
+
+        this.setState((prevState) => ({
+          department: someDepartment
+            ? prevState.department
+            : [...prevState.department, savedDepartment],
+          isAddFormOpen: false,
+          activeDepartment: null,
+        }));
+        toast.success(
+          `Факультет ${savedDepartment.name.toUpperCase()} успешно добавлен !!`
+        );
+      }
+      this.setState({
+        isAddFormOpen: false,
+        activeDepartment: null,
+      });
+      if (someDepartment) {
+        toast.warning(
+          `Город с названием ${activeDepartment.name.toUpperCase()} уже существует`
+        );
+      }
+    } catch (error) {
+      this.setState({ error: error.message });
+      toast.error(`Что-то пошло не так :(`);
+    } finally {
+      this.setState({
+        loading: false,
+        action: ACTION.NONE,
+      });
+      this.closeModal();
+    }
+
+    // this.setState((prevState) => ({
+    //   department: someDepartment
+    //     ? prevState.department
+    //     : [...prevState.department, newDepartment],
+    //   isAddFormOpen: false,
+    // }));
     // this.setState((prevState) => ({
     //   department:[...prevState.department,newDepartment]
     // }))
@@ -89,22 +193,66 @@ class DepartmentsBlock extends Component {
   //EDIT DEPARTMENT
   handleStartEditting = (activeDepartment) => {
     this.setState({
-      openModal: MODAL.EDIT,
+      openModal: ACTION.EDIT,
       // isEditModalOpen: true,
       activeDepartment,
     });
   };
-  saveEditDepartment = (editDepartment) => {
+  confirmEdit = (editedDepartmentName) => {
     const { activeDepartment } = this.state;
 
-    this.setState((prevState) => ({
-      department: prevState.department.map((item) =>
-        activeDepartment === item ? editDepartment : item
-      ),
-      activeDepartment: "",
-    }));
+    if (editedDepartmentName === activeDepartment.name) {
+      this.setState({
+        openModal: ACTION.NONE,
+        activeDepartment: null,
+      });
+      return;
+    }
+    this.setState({
+      action: ACTION.EDIT,
+      activeDepartment: { ...activeDepartment, name: editedDepartmentName },
+    });
+    // console.log(editedCityName);
+  };
+  saveEditDepartment = async () => {
+    this.setState({ loading: true, error: null });
 
-    this.closeModal();
+    const { activeDepartment } = this.state;
+
+    try {
+      const updatedDepartment = await api.editItem(
+        API_ENDPOINT,
+        activeDepartment
+      );
+
+      this.setState((prevState) => ({
+        department: prevState.department.map((item) =>
+          item.id === updatedDepartment.id ? updatedDepartment : item
+        ),
+      }));
+      toast.success(
+        `Город ${updatedDepartment.name.toUpperCase()} успешно изменен !!`
+      );
+    } catch (error) {
+      this.setState({ error: error.message });
+      toast.error(`Что-то пошло не так :(`);
+    } finally {
+      this.setState({
+        loading: false,
+        activeDepartment: null,
+        openModal: ACTION.NONE,
+        action: ACTION.NONE,
+      });
+      this.closeModal();
+    }
+    // this.setState((prevState) => ({
+    //   department: prevState.department.map((item) =>
+    //     activeDepartment === item ? editDepartment : item
+    //   ),
+    //   activeDepartment: "",
+    // }));
+
+    // this.closeModal();
   };
   // closeEditModal = () => this.setState({ isEditModalOpen: false });
 
@@ -119,7 +267,7 @@ class DepartmentsBlock extends Component {
     const normalizedFilter = filter.toLowerCase();
 
     return department.filter((item) =>
-      item.toLowerCase().includes(normalizedFilter)
+      item.name.toLowerCase().includes(normalizedFilter)
     );
   };
 
@@ -127,21 +275,54 @@ class DepartmentsBlock extends Component {
   handleStartDeleteDepartment = (activeDepartment) => {
     this.setState({
       activeDepartment,
-      openModal: MODAL.DELETE,
+      openModal: ACTION.DELETE,
       // isDeleteModalOpen: true,
     });
   };
 
-  onDeleteDepartment = () => {
-    const { activeDepartment } = this.state;
+  confirmDelete = () => {
+    this.setState({
+      action: ACTION.DELETE,
+    });
+  };
 
-    this.setState((prevState) => ({
-      department: prevState.department.filter(
-        (item) => item !== activeDepartment
-      ),
-      activeDepartment: "",
-    }));
-    this.closeModal();
+  onDeleteDepartment = async () => {
+    const { activeDepartment } = this.state;
+    this.setState({ loading: true, error: null });
+    try {
+      const deletedDepartment = await api.deleteItem(
+        API_ENDPOINT,
+        activeDepartment.id
+      );
+
+      this.setState((prevState) => ({
+        department: prevState.department.filter(
+          (item) => item.id !== deletedDepartment.id
+        ),
+        activeDepartment: "",
+      }));
+      toast.success(
+        `Город ${deletedDepartment.name.toUpperCase()} успешно удален !!`
+      );
+    } catch (error) {
+      this.setState({ error: error.message });
+      toast.error(`Что-то пошло не так :(`);
+    } finally {
+      this.setState({
+        loading: false,
+        activeDepartment: null,
+        openModal: ACTION.NONE,
+      });
+      this.closeModal();
+    }
+
+    // this.setState((prevState) => ({
+    //   department: prevState.department.filter(
+    //     (item) => item !== activeDepartment
+    //   ),
+    //   activeDepartment: "",
+    // }));
+    // this.closeModal();
   };
 
   render() {
@@ -151,14 +332,19 @@ class DepartmentsBlock extends Component {
       activeDepartment,
       openModal,
       isAddFormOpen,
+      loading,
+      error,
+      firstLoading,
       // isDeleteModalOpen,
       // isEditModalOpen,
     } = this.state;
 
     const filterDepartment = this.getFilteredDepartment();
+    const noDepartments = !department.length && !firstLoading;
     return (
       <>
         <div>
+          {loading && <Loader loading={loading} />}
           {department.length > 1 && (
             <Filter
               onFilter={this.handlerFilterChangeInput}
@@ -167,7 +353,10 @@ class DepartmentsBlock extends Component {
               placeholder="Введите название факультета ..."
             />
           )}
-          {!department.length && <strong>Еще не записаны факультеты...</strong>}
+          {noDepartments.length && (
+            <strong>Еще не записаны факультеты...</strong>
+          )}
+          {firstLoading && <Skeleton />}
           {filterDepartment.length > 0 && (
             <DepartmentsList
               department={filterDepartment}
@@ -179,7 +368,7 @@ class DepartmentsBlock extends Component {
           )}
           {isAddFormOpen && (
             <DepartmentForm
-              addNewDepartment={this.addNewDepartment}
+              addNewDepartment={this.confirmAdd}
               departmentArr={department}
               name="department"
               title="Добавление факультета"
@@ -192,7 +381,7 @@ class DepartmentsBlock extends Component {
             icon={!isAddFormOpen && <HiPlusCircle />}
           />
         </div>
-        {openModal === MODAL.EDIT && (
+        {openModal === ACTION.EDIT && (
           <Modal
             icon={<FaEdit />}
             onClose={this.closeModal}
@@ -200,22 +389,22 @@ class DepartmentsBlock extends Component {
             title="Редактировать информацию о факультетах"
           >
             <EditCard
-              activeDepartment={activeDepartment}
-              onSubmit={this.saveEditDepartment}
+              activeDepartment={activeDepartment.name}
+              onSubmit={this.confirmEdit}
             />
           </Modal>
         )}
 
-        {openModal === MODAL.DELETE && (
+        {openModal === ACTION.DELETE && (
           <Modal
             onClose={this.closeModal}
             // onCloseEditModal={this.closeModal}
-            onDeletePepartment={this.onDeleteDepartment}
+            // onDeletePepartment={this.onDeleteDepartment}
             title="Удаление факультета"
           >
             <DeleteCard
               onClose={this.closeModal}
-              onDeleteDepartment={this.onDeleteDepartment}
+              onDeleteDepartment={this.confirmDelete}
               text="Будут удалены все материалы и информация о факультете"
             />
           </Modal>

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { object } from "prop-types";
 
 import s from "./EditCard.module.css";
+import { string } from "prop-types";
 
 class EditCard extends Component {
   state = {
@@ -12,11 +13,9 @@ class EditCard extends Component {
   // CHANGE INPUT
 
   handlerChangeCity = (e) => {
-    console.log(e.target.value);
     this.setState({ inputCity: e.target.value });
   };
   handlerChangeDepartment = (e) => {
-    console.log(e.target.value);
     this.setState({ inputDepartment: e.target.value });
   };
 
@@ -83,8 +82,8 @@ class EditCard extends Component {
 
 EditCard.propTypes = {
   onSubmit: PropTypes.func,
-  activeCity: PropTypes.string,
-  activeDepartment: PropTypes.string,
+  activeCity: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  activeDepartment: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default EditCard;

@@ -1,0 +1,18 @@
+.wrapLoader {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}

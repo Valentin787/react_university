@@ -17,14 +17,14 @@ class CitiesList extends Component {
 
     return (
       <ul className={s.list}>
-        {cities.map((city, index) => (
-          <li className={s.item__list} key={index + 1}>
+        {cities.map((item) => (
+          <li className={s.item__list} key={item.id}>
             <Paper>
               <CardWithMenu
-                text={city}
-                onDeleteModal={() => onDeleteCity(city)}
+                text={item.name}
+                onDeleteModal={() => onDeleteCity(item)}
                 onModalCityOpen={onModalCityOpen}
-                onOpenEditModal={() => onOpenEditCityModal(city)}
+                onOpenEditModal={() => onOpenEditCityModal(item)}
                 onEditModalOpen={onEditModalOpen}
               />
             </Paper>
