@@ -23,11 +23,11 @@ const Main = () => {
       </Section>
 
       <Section title="Города" icon={<CityIcon />}>
-        <CitiesBlock cities={cities} />
+        <CitiesBlock />
       </Section>
 
       <Section title="Факультеты" icon={<DepartmentIcon />}>
-        <DepartmentsBlock department={department} />
+        <DepartmentsBlock />
       </Section>
     </main>
   );
