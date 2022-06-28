@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/react_university/static/css/main.b653d116.css",
-    "main.js": "/react_university/static/js/main.e713abce.js",
+    "main.css": "/react_university/static/css/main.0e0985c1.css",
+    "main.js": "/react_university/static/js/main.3bc1cc6c.js",
     "static/media/iconfinder-499-student-education-graduate-learning-4212915_114945.svg": "/react_university/static/media/iconfinder-499-student-education-graduate-learning-4212915_114945.745009451be78fce6ca5b7b7058be4dd.svg",
     "static/media/building-education-school-school-icon_112987.svg": "/react_university/static/media/building-education-school-school-icon_112987.7de56cfbe6959215c47d5ca9b7c098e1.svg",
     "static/media/bag.svg": "/react_university/static/media/bag.05ead566bd6b423a2ef9efda082a812f.svg",
@@ -12,11 +12,11 @@
     "static/media/location.svg": "/react_university/static/media/location.fe968c697aaeb2c153ac27ec3f4096f9.svg",
     "static/media/mobile.svg": "/react_university/static/media/mobile.affde37f5636f3b377afb7af1a83a910.svg",
     "static/media/plus.svg": "/react_university/static/media/plus.2d876f4960b3e4e06a83b2f8533b9e0f.svg",
-    "main.b653d116.css.map": "/react_university/static/css/main.b653d116.css.map",
-    "main.e713abce.js.map": "/react_university/static/js/main.e713abce.js.map"
+    "main.0e0985c1.css.map": "/react_university/static/css/main.0e0985c1.css.map",
+    "main.3bc1cc6c.js.map": "/react_university/static/js/main.3bc1cc6c.js.map"
   },
   "entrypoints": [
-    "static/css/main.b653d116.css",
-    "static/js/main.e713abce.js"
+    "static/css/main.0e0985c1.css",
+    "static/js/main.3bc1cc6c.js"
   ]
 }
