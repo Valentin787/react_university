@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useLocalStorage } from "react-use";
+
 import CitiesList from "./CitiesList/CitiesList";
 import Skeleton from "../common/Skeleton/Skeleton";
 import Loader from "../common/Loader/Loader";
@@ -31,7 +33,7 @@ const ACTION = {
 const CitiesBlock = (props) => {
   const [cities, setCities] = useState([]);
   const [activeCity, setActiveCity] = useState(null);
-  const [filter, setFilter] = useState(() => storage.get(FILTER_KEY) ?? "");
+  // const [filter, setFilter] = useState(() => storage.get(FILTER_KEY) ?? "");
   const [newCity, setNewCity] = useState(null);
   const [openModal, setOpenModal] = useState(ACTION.NONE);
   const [action, setAction] = useState(ACTION.NONE);
@@ -39,6 +41,10 @@ const CitiesBlock = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [firstLoading, setFirstLoading] = useState(false);
+
+  //CUSTOM HOOK USE_LOCAL_STORAGE
+
+  const [filter, setFilter] = useLocalStorage(FILTER_KEY, "");
 
   // USEEFFECT__GET CITIES__COMPONENT DID MOUNT
 
@@ -119,10 +125,10 @@ const CitiesBlock = (props) => {
   }, [action, activeCity, cities]);
 
   // EDIT CITY
-  const handleStartEditting = (activeCity) => {
+  const handleStartEditting = useCallback((activeCity) => {
     setOpenModal(ACTION.EDIT);
     setActiveCity(activeCity);
-  };
+  }, []);
 
   const confirmEdit = (editedCityName) => {
     if (editedCityName === activeCity.name) {
@@ -168,29 +174,40 @@ const CitiesBlock = (props) => {
   }, [action, activeCity]);
 
   // FILTER CITY
-  useEffect(() => {
-    storage.save(FILTER_KEY, filter);
-  }, [filter]);
+  // useEffect(() => {
+  //   storage.save(FILTER_KEY, filter);
+  // }, [filter]);
 
   const handlerFilterChangeInput = (e) => {
     const { value } = e.target;
     setFilter(value);
   };
-
-  const getFilteredCities = () => {
+  //Варіант з хуком USE MEMO
+  const filterCities = useMemo(() => {
     const normalizedFilter = filter.toLowerCase();
 
     return cities.filter((city) =>
       city.name.toLowerCase().includes(normalizedFilter)
     );
-  };
+  }, [filter, cities]);
+
+  // Варіант без USE MEMO
+  // const getFilterCities = () => {
+  //   const normalizedFilter = filter.toLowerCase();
+
+  //   return cities.filter((city) =>
+  //     city.name.toLowerCase().includes(normalizedFilter)
+  //   );
+  // };
+
+  // const filterCities = getFilterCities();
 
   // DELETE CITY
 
-  const handleStartDeleteCity = (activeCity) => {
+  const handleStartDeleteCity = useCallback((activeCity) => {
     setActiveCity(activeCity);
     setOpenModal(ACTION.DELETE);
-  };
+  }, []);
 
   const confirmDelete = () => setAction(ACTION.DELETE);
 
@@ -226,7 +243,7 @@ const CitiesBlock = (props) => {
     onDeleteCity();
   }, [action, activeCity]);
 
-  const filterCities = getFilteredCities();
+  // const filterCities = getFilteredCities();
   const noCities = !cities.length && !firstLoading;
 
   return (

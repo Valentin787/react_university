@@ -1,5 +1,6 @@
 // import React, { Component } from "react";
 import React, { useEffect } from "react";
+import { useLockBodyScroll, useToggle } from "react-use";
 
 // MODAL
 import { createPortal } from "react-dom";
@@ -11,6 +12,8 @@ import s from "./Modal.module.css";
 const modalRoot = document.querySelector("#modal-root");
 
 const Modal = ({ title, icon, children, onClose }) => {
+  useLockBodyScroll(true);
+
   useEffect(() => {
     const handlerKeyDown = (e) => {
       if (e.code === "Escape") {

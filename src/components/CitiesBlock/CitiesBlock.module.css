@@ -12,3 +12,11 @@
   margin-bottom: 24px;
   margin-right: 32px;
 }
+.itemLight {
+  composes: item__list;
+  color: black;
+}
+.itemDark {
+  composes: item__list;
+  color: hsl(0, 0%, 100%);
+}

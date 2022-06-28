@@ -13,3 +13,12 @@
   line-height: 24px;
   letter-spacing: 0.5px;
 }
+
+.textLight {
+  composes: text;
+  color: #010101;
+}
+.textDark {
+  composes: text;
+  color: white;
+}

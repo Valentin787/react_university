@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import PropTypes, { object } from "prop-types";
+import PropTypes from "prop-types";
 
 import s from "./EditCard.module.css";
-import { string } from "prop-types";
 
 const EditCard = ({ onSubmit, activeCity, activeDepartment }) => {
   const [inputCity, setInputCity] = useState(activeCity);
   const [inputDepartment, setInputDepartment] = useState(activeDepartment);
 
+  // USE REF
   const inputRef = useRef(null);
 
   useEffect(() => {

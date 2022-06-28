@@ -4,6 +4,15 @@
   font-size: 16px;
   line-height: 1.5;
 }
+.blockLight {
+  composes: block;
+  color: black;
+}
+.blockDark {
+  composes: block;
+  color: white;
+}
+
 .name {
   padding-right: 24px;
   flex: 0 0 200px;
@@ -15,6 +24,14 @@
 .dataText {
   display: flex;
   align-items: center;
+}
+.dataTextLight {
+  composes: dataText;
+  fill: black;
+}
+.dataTextDark {
+  composes: dataText;
+  fill: white;
 }
 .text {
   margin-left: 8px;

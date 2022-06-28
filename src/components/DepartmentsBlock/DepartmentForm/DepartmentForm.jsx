@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { ThemeContext, themes } from "../../../components/context/themeContext";
+
 import PropTypes from "prop-types";
 import Paper from "../../common/Paper/Paper";
 import BigButton from "../../common/BigButton/BigButton";
@@ -12,6 +15,10 @@ const DepartmentForm = ({
   addNewDepartment,
 }) => {
   const [department, setDepartment] = useState("");
+
+  //USE_CONTEXT
+
+  const { theme } = useContext(ThemeContext);
 
   const handlerSubmitForm = (e) => {
     e.preventDefault();
@@ -28,7 +35,9 @@ const DepartmentForm = ({
   return (
     <div className={s.wrap}>
       <Paper>
-        <h4 className={s.header}>{title}</h4>
+        <h4 className={theme === themes.light ? s.headerLight : s.headerDark}>
+          {title}
+        </h4>
         <form onSubmit={handlerSubmitForm} className={s.form} action="">
           <input
             onChange={(e) => setDepartment(e.target.value)}

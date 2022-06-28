@@ -1,5 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import { ThemeContext, themes } from "../../components/context/themeContext";
+import s from "./Section.module.css";
+
 import "./Section.module.css";
 
 const sectionStyle = {
@@ -16,11 +20,15 @@ const sectionStyle = {
 };
 
 const Section = ({ icon, title, children }) => {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <section css={sectionStyle}>
       <div className="header">
         <div className="img-wrapper">{icon}</div>
-        <h3 className="heading">{title}</h3>
+        <h3 className={theme === themes.light ? "heading" : s.titleDark}>
+          {title}
+        </h3>
       </div>
       {children}
     </section>

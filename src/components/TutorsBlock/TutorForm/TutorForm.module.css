@@ -8,6 +8,14 @@
   padding-left: 24px;
   font-size: 20px;
 }
+.headerLight {
+  composes: header;
+  color: black;
+}
+.headerDark {
+  composes: header;
+  color: #ff6b0a;
+}
 .form {
   display: flex;
   flex-direction: column;

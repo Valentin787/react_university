@@ -1,47 +1,72 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useContext } from "react";
+import { ThemeContext, themes } from "../../components/context/themeContext";
+
 import PropTypes from "prop-types";
+import useOutsideClickDetector from "../../hooks/useOutsideClickDetector.js";
+import useToggle from "../../hooks/useToggle";
 import { HiMenu } from "react-icons/hi";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import s from "./CardWithMenu.module.css";
 
 const CardWithMenu = ({ text, onOpenEditModal, onDeleteModal }) => {
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
+  //USE_CONTEXT
+  const { theme } = useContext(ThemeContext);
+  //USE_REF
+  const cardRef = useRef(null);
 
-  const handleClick = () => setIsOpenMenu((prevState) => !prevState);
+  // CUSTOM HOOK USE_TOGGLE
+
+  const [isOpen, toggleMenu] = useToggle(false);
+
+  //ПЕРЕДАЄМ В ЯКОСТІ АРГУМЕНТІВ КАСТОМНОМУ ХУКУ ДАННІ
+
+  useOutsideClickDetector(cardRef, toggleMenu, isOpen);
+
+  ///////
+  // const [isOpenMenu, setIsOpenMenu] = useState(false);
+  // const togglemMenu = () => setIsOpenMenu((prevState) => !prevState);
 
   const handleEdit = () => {
     onOpenEditModal();
-    handleClick();
+    toggleMenu();
   };
 
   const handleDelete = () => {
     onDeleteModal();
-    handleClick();
+    toggleMenu();
   };
 
+  const textColor = theme === themes.light ? s.textLight : s.textDark;
+
   return (
-    <div className={s.wrap}>
+    <div ref={cardRef} className={s.wrap}>
       <div className={s.item}>
         <p>{text}</p>
-        <button onClick={handleClick} className={s.button}>
+        <button
+          onClick={toggleMenu}
+          className={theme === themes.light ? s.buttonLight : s.buttonDark}
+        >
           <HiMenu />
         </button>
       </div>
 
-      {isOpenMenu && (
-        <div className={s.menuWrap}>
+      {isOpen && (
+        <div
+          className={theme === themes.light ? s.menuWrapLight : s.menuWrapDark}
+        >
           <div onClick={handleEdit} className={s.itemContainer}>
             <span className={s.svgWrap}>
               <FaRegEdit fontSize="20px" color="#ff6b0a" />
             </span>
-            <span>Редактировать</span>
+            <span className={textColor}>Редактировать</span>
           </div>
           <div onClick={handleDelete} className={s.itemContainer}>
             <span className={s.svgWrap}>
               <MdDeleteForever fontSize="22px" color="#ff6b0a" />
             </span>
-            <span>Удалить</span>
+            <span className={textColor}>Удалить</span>
           </div>
         </div>
       )}

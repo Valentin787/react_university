@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { ThemeContext, themes } from "../../../components/context/themeContext";
+
 import PropTypes from "prop-types";
 import Paper from "../../common/Paper/Paper";
 import s from "./CitiesForm.module.css";
@@ -6,6 +9,9 @@ import BigButton from "../../common/BigButton/BigButton";
 
 const CitiesForm = ({ addNewCity, cities, name, title, placeholder }) => {
   const [city, setCity] = useState("");
+
+  //USE_CONTEXT
+  const { theme } = useContext(ThemeContext);
 
   const handlerCityInput = (e) => setCity(e.target.value);
 
@@ -30,7 +36,9 @@ const CitiesForm = ({ addNewCity, cities, name, title, placeholder }) => {
   return (
     <div className={s.wrap}>
       <Paper>
-        <h4 className={s.header}>{title}</h4>
+        <h4 className={theme === themes.light ? s.headerLight : s.headerDark}>
+          {title}
+        </h4>
         <form onSubmit={handlerSubmitCityForm} className={s.form} action="">
           <input
             onChange={handlerCityInput}

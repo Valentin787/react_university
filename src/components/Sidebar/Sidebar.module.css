@@ -17,6 +17,14 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
   z-index: 10;
 }
+.SidebarLight {
+  composes: Sidebar;
+  background-color: white;
+}
+.SidebarDark {
+  composes: Sidebar;
+  background-color: #4b4a4adc;
+}
 .SidebarClosed {
   position: sticky;
   top: 0px;
@@ -32,15 +40,31 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
   z-index: 10;
 }
+.SidebarClosedLight {
+  composes: SidebarClosed;
+  background-color: white;
+}
+.SidebarClosedDark {
+  composes: SidebarClosed;
+  background-color: #4b4a4adc;
+}
 .SidebarDecor {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 80px;
   padding-right: 20px;
-  background-color: #161d2a;
-  color: #eee;
+  /* background-color: #161d2a; */
+
   overflow: hidden;
+}
+.SidebarDecorLight {
+  composes: SidebarDecor;
+  background-color: #161d2a;
+}
+.SidebarDecorDark {
+  composes: SidebarDecor;
+  background-color: #3e3d3d;
 }
 .toggleBtn {
   display: flex;

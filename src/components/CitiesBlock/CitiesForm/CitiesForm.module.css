@@ -3,6 +3,14 @@
   padding-top: 10px;
   font-size: 20px;
 }
+.headerLight {
+  composes: header;
+  color: black;
+}
+.headerDark {
+  composes: header;
+  color: #ff6b0a;
+}
 .wrap {
   width: 88%;
   padding-left: 40px;

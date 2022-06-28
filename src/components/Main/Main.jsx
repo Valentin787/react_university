@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { ThemeContext, themes } from "../../components/context/themeContext";
 import universityInfo from "../../data/universityInfo.json";
 import Header from "../Header/Header";
 import UniversityBlock from "../UniversityBlock/UniversityBlock";
@@ -14,8 +16,10 @@ import { ReactComponent as DepartmentIcon } from "../../images/bag.svg";
 const { name, description, cities, department } = universityInfo;
 
 const Main = () => {
+  const { theme } = useContext(ThemeContext);
+
   return (
-    <main className={s.main}>
+    <main className={theme === themes.light ? s.mainLight : s.mainDark}>
       <Header title="Информация об университете" />
       <UniversityBlock name={name} descr={description} />
       <Section title="Преподователи" icon={<Teacher />}>

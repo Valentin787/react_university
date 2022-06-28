@@ -1,19 +1,38 @@
-import React, { Component } from "react";
 import { useState } from "react";
+import { useContext } from "react";
+import { ThemeContext, themes } from "../../components/context/themeContext";
+
+import useToggle from "../../hooks/useToggle";
 import Navigation from "../Navigation/Navigation";
 import s from "./Sidebar.module.css";
 import { MdArrowForwardIos, MdArrowBackIosNew } from "react-icons/md";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
 
-  const handlerOpenSidebar = () => setIsOpen((prevIsOpen) => !prevIsOpen);
+  // const toggleSidebar = () => setIsOpen((prevIsOpen) => !prevIsOpen);
+
+  //USE_CONTEXT
+  const { theme } = useContext(ThemeContext);
+
+  const [isOpen, toggleSidebar] = useToggle(true);
+
+  const sidebar = theme === themes.light ? s.SidebarLight : s.SidebarDark;
+  const sidebarClosed =
+    theme === themes.light || isOpen
+      ? s.SidebarClosedLight
+      : s.SidebarClosedDark;
+
   return (
-    <div className={isOpen ? s.Sidebar : s.SidebarClosed}>
-      <div className={s.SidebarDecor}></div>
+    <div className={isOpen ? sidebar : sidebarClosed}>
+      <div
+        className={
+          theme === themes.light ? s.SidebarDecorLight : s.SidebarDecorDark
+        }
+      ></div>
       <button
-        onClick={handlerOpenSidebar}
-        className={isOpen ? s.toggleBtnRight : s.toggleBtnRight}
+        onClick={toggleSidebar}
+        className={isOpen ? s.toggleBtnRight : s.toggleBtnLeft}
         aria-label="toggleSidebar"
       >
         {isOpen ? (

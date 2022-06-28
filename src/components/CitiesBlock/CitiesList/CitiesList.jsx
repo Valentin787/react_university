@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
-import React from "react";
+import { memo } from "react";
+import { useContext } from "react";
+import { ThemeContext, themes } from "../../../components/context/themeContext";
 
 import CardWithMenu from "../../CardWithMenu/CardWithMenu";
 import Paper from "../../common/Paper/Paper";
@@ -12,10 +14,16 @@ const CitiesList = ({
   onOpenEditCityModal,
   onEditModalOpen,
 }) => {
+  //USE_CONTEXT
+  const { theme } = useContext(ThemeContext);
+
   return (
     <ul className={s.list}>
       {cities.map((item) => (
-        <li className={s.item__list} key={item.id}>
+        <li
+          className={theme === themes.light ? s.itemLight : s.itemDark}
+          key={item.id}
+        >
           <Paper>
             <CardWithMenu
               text={item.name}
@@ -37,7 +45,7 @@ CitiesList.propTypes = {
   onOpenEditCityModal: PropTypes.func,
 };
 
-export default CitiesList;
+export default memo(CitiesList);
 
 // class CitiesList extends Component {
 //   render() {

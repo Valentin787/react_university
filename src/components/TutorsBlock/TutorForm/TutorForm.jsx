@@ -1,4 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
+import { useContext } from "react";
+import { ThemeContext, themes } from "../../../components/context/themeContext";
+
 import BigButton from "../../common/BigButton/BigButton";
 import Paper from "../../common/Paper/Paper";
 import PropTypes from "prop-types";
@@ -13,6 +16,8 @@ const TutorForm = ({ onAddTutor }) => {
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
   const [options, setOptions] = useState("");
+
+  const { theme } = useContext(ThemeContext);
 
   // const handleChangeInputForm = (e) => {
   //   const { name, value } = e.target;
@@ -60,7 +65,9 @@ const TutorForm = ({ onAddTutor }) => {
     <div className={s.wrap}>
       <Paper>
         <div className={s.form__wrap}>
-          <h4 className={s.header}>Добавление преподователя</h4>
+          <h4 className={theme === themes.light ? s.headerLight : s.headerDark}>
+            Добавление преподователя
+          </h4>
           <form onSubmit={handleSubmit} className={s.form} action="">
             <input
               onChange={(e) => setLastName(e.target.value)}

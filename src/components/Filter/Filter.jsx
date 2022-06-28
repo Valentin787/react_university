@@ -1,11 +1,15 @@
 import React from "react";
+import { useContext } from "react";
+import { ThemeContext, themes } from "../../components/context/themeContext";
 import PropTypes from "prop-types";
 import s from "./Filter.module.css";
 
 const Filter = ({ label, placeholder, value, onFilter }) => {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <div className={s.container}>
-      <label className={s.label}>
+      <label className={theme === themes.light ? s.labelLight : s.labelDark}>
         {label}
         <input
           onChange={onFilter}

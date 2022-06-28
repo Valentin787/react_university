@@ -1,4 +1,7 @@
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import { ThemeContext, themes } from "../../../components/context/themeContext";
+
 import Paper from "../../common/Paper/Paper";
 import s from "./DepartmentsList.module.css";
 import CardWithMenu from "../../CardWithMenu/CardWithMenu";
@@ -10,10 +13,17 @@ const DepartmentsList = ({
   onOpenEditDepartmentModal,
   onEditModalOpen,
 }) => {
+  //USE_CONTEXT
+
+  const { theme } = useContext(ThemeContext);
+
   return (
     <ul className={s.list}>
       {department.map((item) => (
-        <li className={s.item__list} key={item.id}>
+        <li
+          className={theme === themes.light ? s.itemLight : s.itemDark}
+          key={item.id}
+        >
           <Paper>
             <CardWithMenu
               text={item.name}

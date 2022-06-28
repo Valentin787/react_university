@@ -1,0 +1,13 @@
+.reactSwitch {
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  user-select: none;
+}
