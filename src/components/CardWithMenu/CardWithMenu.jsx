@@ -15,7 +15,6 @@ const CardWithMenu = ({ text, onOpenEditModal, onDeleteModal, link, id }) => {
 
   const location = useLocation();
 
-  console.log(`${link}/${id}`);
   // use
 
   //USE_CONTEXT
@@ -49,46 +48,48 @@ const CardWithMenu = ({ text, onOpenEditModal, onDeleteModal, link, id }) => {
 
   return (
     <div ref={cardRef} className={s.wrap}>
-      <Link
-        className={theme === themes.light ? s.textLight : s.textDark}
-        to={{
-          pathname: `${link}/${id}`,
-          state: {
-            from: location,
-          },
-        }}
-      >
-        <div className={s.item}>
-          <p>{text}</p>
-          <button
-            onClick={toggleMenu}
-            className={theme === themes.light ? s.buttonLight : s.buttonDark}
+      <div className={s.item}>
+        {link && (
+          <Link
+            className={theme === themes.light ? s.textLight : s.textDark}
+            to={{
+              pathname: `${link}/${id}`,
+              state: {
+                from: location,
+              },
+            }}
           >
-            <HiMenu />
-          </button>
-        </div>
-
-        {isOpen && (
-          <div
-            className={
-              theme === themes.light ? s.menuWrapLight : s.menuWrapDark
-            }
-          >
-            <div onClick={handleEdit} className={s.itemContainer}>
-              <span className={s.svgWrap}>
-                <FaRegEdit fontSize="20px" color="#ff6b0a" />
-              </span>
-              <span className={textColor}>Редактировать</span>
-            </div>
-            <div onClick={handleDelete} className={s.itemContainer}>
-              <span className={s.svgWrap}>
-                <MdDeleteForever fontSize="22px" color="#ff6b0a" />
-              </span>
-              <span className={textColor}>Удалить</span>
-            </div>
-          </div>
+            <p>{text}</p>
+          </Link>
         )}
-      </Link>
+
+        {!link && <p>{text}</p>}
+        <button
+          onClick={toggleMenu}
+          className={theme === themes.light ? s.buttonLight : s.buttonDark}
+        >
+          <HiMenu />
+        </button>
+      </div>
+
+      {isOpen && (
+        <div
+          className={theme === themes.light ? s.menuWrapLight : s.menuWrapDark}
+        >
+          <div onClick={handleEdit} className={s.itemContainer}>
+            <span className={s.svgWrap}>
+              <FaRegEdit fontSize="20px" color="#ff6b0a" />
+            </span>
+            <span className={textColor}>Редактировать</span>
+          </div>
+          <div onClick={handleDelete} className={s.itemContainer}>
+            <span className={s.svgWrap}>
+              <MdDeleteForever fontSize="22px" color="#ff6b0a" />
+            </span>
+            <span className={textColor}>Удалить</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

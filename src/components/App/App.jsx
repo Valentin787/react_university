@@ -23,5 +23,6 @@ const App = () => {
     </div>
   );
 };
-// "deploy": "gh-pages -d build",
+
 export default App;
+// "deploy": "netlify deploy -p",
