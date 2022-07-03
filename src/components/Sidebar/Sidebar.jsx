@@ -45,7 +45,9 @@ const Sidebar = () => {
           </span>
         )}
       </button>
-      <Navigation isActive={isOpen} />
+      <Navigation
+      // isActive={isOpen}
+      />
     </div>
   );
 };

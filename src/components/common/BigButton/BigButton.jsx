@@ -6,6 +6,7 @@ const BigButton = ({
   icon,
   type,
   onClickForm,
+  onClick,
   disabled,
   onClickOpenForm,
   disabledBtnCity,
@@ -15,7 +16,7 @@ const BigButton = ({
   return (
     <button
       type={type === "submit" ? "submit" : "button"}
-      onClick={onClickForm || onClickOpenForm}
+      onClick={onClickForm || onClickOpenForm || onClick}
       className={isActive || disabledBtnCity ? s.disabled : s.btn}
     >
       <span className={s.icon}>{icon}</span>

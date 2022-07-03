@@ -1,0 +1,54 @@
+.list {
+  display: flex;
+  flex-direction: column;
+}
+.item__list {
+  position: relative;
+  margin-bottom: 24px;
+  margin-right: 32px;
+}
+.linkLight {
+  text-decoration: none;
+  composes: item__list;
+  color: black;
+}
+.linkDark {
+  text-decoration: none;
+  composes: item__list;
+  color: hsl(0, 0%, 100%);
+}
+
+.itemLight {
+  composes: item__list;
+  color: black;
+}
+.itemDark {
+  composes: item__list;
+  color: hsl(0, 0%, 100%);
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0 9px 14px;
+  line-height: 1.5;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  padding: 4px;
+  margin-left: 3px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: all 200ms;
+}
+.button:hover {
+  background-color: #ff6b0a;
+}

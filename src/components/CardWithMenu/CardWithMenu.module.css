@@ -39,9 +39,11 @@
 }
 .textLight {
   color: black;
+  text-decoration: none;
 }
 .textDark {
   color: white;
+  text-decoration: none;
 }
 .item {
   display: flex;
@@ -49,6 +51,7 @@
   align-items: center;
   padding: 9px 0 9px 14px;
   line-height: 1.5;
+  text-decoration: none;
 }
 
 .button {

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { ThemeContext, themes } from "../../../components/context/themeContext";
+import { useRouteMatch } from "react-router-dom";
 
 import Paper from "../../common/Paper/Paper";
 import s from "./DepartmentsList.module.css";
@@ -31,6 +32,8 @@ const DepartmentsList = ({
               onOpenModalDelete={onOpenModalDelete}
               onOpenEditModal={() => onOpenEditDepartmentModal(item)}
               onEditModalOpen={onEditModalOpen}
+              link={"/departments"}
+              id={item.id}
             />
           </Paper>
         </li>

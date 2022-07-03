@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #2e343fd5;
+  margin: 10px 0px;
+}
+.item {
+  font-size: 20px;
+  padding: 10px;
+  margin-left: 20px;
+  text-decoration: none;
+}
+.navItem {
+  composes: item;
+  color: rgb(128, 126, 126);
+}
+.activeNavItem {
+  composes: item;
+  color: white;
+}
+.btn {
+  background-color: brown;
+}

@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useContext } from "react";
 import { ThemeContext, themes } from "../../components/context/themeContext";
-
+import { Link, Switch, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import useOutsideClickDetector from "../../hooks/useOutsideClickDetector.js";
 import useToggle from "../../hooks/useToggle";
@@ -10,7 +10,14 @@ import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import s from "./CardWithMenu.module.css";
 
-const CardWithMenu = ({ text, onOpenEditModal, onDeleteModal }) => {
+const CardWithMenu = ({ text, onOpenEditModal, onDeleteModal, link, id }) => {
+  // const [department, setDepartment] = useState([]);
+
+  const location = useLocation();
+
+  console.log(`${link}/${id}`);
+  // use
+
   //USE_CONTEXT
   const { theme } = useContext(ThemeContext);
   //USE_REF
@@ -42,34 +49,46 @@ const CardWithMenu = ({ text, onOpenEditModal, onDeleteModal }) => {
 
   return (
     <div ref={cardRef} className={s.wrap}>
-      <div className={s.item}>
-        <p>{text}</p>
-        <button
-          onClick={toggleMenu}
-          className={theme === themes.light ? s.buttonLight : s.buttonDark}
-        >
-          <HiMenu />
-        </button>
-      </div>
-
-      {isOpen && (
-        <div
-          className={theme === themes.light ? s.menuWrapLight : s.menuWrapDark}
-        >
-          <div onClick={handleEdit} className={s.itemContainer}>
-            <span className={s.svgWrap}>
-              <FaRegEdit fontSize="20px" color="#ff6b0a" />
-            </span>
-            <span className={textColor}>Редактировать</span>
-          </div>
-          <div onClick={handleDelete} className={s.itemContainer}>
-            <span className={s.svgWrap}>
-              <MdDeleteForever fontSize="22px" color="#ff6b0a" />
-            </span>
-            <span className={textColor}>Удалить</span>
-          </div>
+      <Link
+        className={theme === themes.light ? s.textLight : s.textDark}
+        to={{
+          pathname: `${link}/${id}`,
+          state: {
+            from: location,
+          },
+        }}
+      >
+        <div className={s.item}>
+          <p>{text}</p>
+          <button
+            onClick={toggleMenu}
+            className={theme === themes.light ? s.buttonLight : s.buttonDark}
+          >
+            <HiMenu />
+          </button>
         </div>
-      )}
+
+        {isOpen && (
+          <div
+            className={
+              theme === themes.light ? s.menuWrapLight : s.menuWrapDark
+            }
+          >
+            <div onClick={handleEdit} className={s.itemContainer}>
+              <span className={s.svgWrap}>
+                <FaRegEdit fontSize="20px" color="#ff6b0a" />
+              </span>
+              <span className={textColor}>Редактировать</span>
+            </div>
+            <div onClick={handleDelete} className={s.itemContainer}>
+              <span className={s.svgWrap}>
+                <MdDeleteForever fontSize="22px" color="#ff6b0a" />
+              </span>
+              <span className={textColor}>Удалить</span>
+            </div>
+          </div>
+        )}
+      </Link>
     </div>
   );
 };
@@ -78,6 +97,8 @@ CardWithMenu.propTypes = {
   text: PropTypes.string.isRequired,
   onDeleteModal: PropTypes.func,
   onOpenEditModal: PropTypes.func,
+  link: PropTypes.string,
+  id: PropTypes.string,
 };
 
 export default CardWithMenu;
